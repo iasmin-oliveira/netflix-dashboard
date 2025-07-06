@@ -20,7 +20,11 @@ df_genero = df.explode('listed_in')
 genero_escolhido = st.selectbox("Selecione um gênero", sorted(df_genero['listed_in'].dropna().unique()))
 df_genero_filtrado = df_genero[df_genero['listed_in'] == genero_escolhido]
 genero_ano = df_genero_filtrado.groupby('release_year').size().reset_index(name='Quantidade')
-fig1 = px.bar(genero_ano, x='release_year', y='Quantidade', title=f"Evolução do gênero '{genero_escolhido}' por ano")
+fig1 = px.bar(genero_ano, 
+              x='release_year',
+              y='Quantidade',
+              title=f"Evolução do gênero '{genero_escolhido}' por ano",
+              color_discrete_sequence=['#B30000', '#E50914', '#FF4C4C', '#FF6666'])
 st.plotly_chart(fig1)
 
 st.subheader("Lançamentos por País ao Longo dos Anos")
@@ -29,7 +33,11 @@ paises_unicos = sorted(set([p for sublist in df['country'].str.split(', ') for p
 pais_sel = st.selectbox("Selecione um país", paises_unicos)
 df_pais = df[df['country'].str.contains(pais_sel)]
 df_pais_ano = df_pais.groupby('release_year').size().reset_index(name='Lançamentos')
-fig2 = px.area(df_pais_ano, x='release_year', y='Lançamentos', title=f"Lançamentos de títulos do país '{pais_sel}' ao longo dos anos")
+fig2 = px.area(df_pais_ano,
+               x='release_year', 
+               y='Lançamentos', 
+               title=f"Lançamentos de títulos do país '{pais_sel}' ao longo dos anos",
+               color_discrete_sequence=['#E50914'])
 st.plotly_chart(fig2)
 
 
@@ -63,6 +71,7 @@ else:
         y='Lançamentos',
         color='country',
         title="Lançamentos de títulos por país ao longo dos anos",
+        color_discrete_sequence=['#B30000', '#E50914', '#FF4C4C', '#FF6666'],
         labels={'release_year': 'Ano de Lançamento', 'country': 'País'}
     )
     fig3.update_layout(legend_title_text='País', xaxis=dict(dtick=1))
